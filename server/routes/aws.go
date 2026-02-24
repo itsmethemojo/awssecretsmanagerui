@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/ledongthuc/awssecretsmanagerui/server/actions"
+	"github.com/itsmethemojo/awssecretsmanagerui/server/actions"
 )
 
 func setupAWSRoutes(g *echo.Group) {

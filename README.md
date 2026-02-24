@@ -1,6 +1,6 @@
 # AWS Secrets Manager UI
 
-[![Built with WeBuild](https://raw.githubusercontent.com/webuild-community/badge/master/svg/WeBuild.svg)](https://webuild.community) [![build](https://github.com/ledongthuc/awssecretsmanagerui/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/ledongthuc/awssecretsmanagerui/actions/workflows/build.yml)
+[![Built with WeBuild](https://raw.githubusercontent.com/webuild-community/badge/master/svg/WeBuild.svg)](https://webuild.community) [![build](https://github.com/itsmethemojo/awssecretsmanagerui/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/itsmethemojo/awssecretsmanagerui/actions/workflows/build.yml)
 
 A Web application to manage AWS Secrets manager
 
@@ -23,7 +23,7 @@ docker run -ti \
  -p 30301:30301 \
  -e AWS_ACCESS_KEY_ID=123456789012 \
  -e AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY \
- ledongthuc/awssecretsmanagerui:latest
+ itsmethemojo/awssecretsmanagerui:latest
 ```
 
 Make sure you configure [AWS credential](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html). Then you can access http://localhost:30301

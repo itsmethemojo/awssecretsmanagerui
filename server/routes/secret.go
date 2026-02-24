@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/secretsmanager"
 	"github.com/labstack/echo/v4"
 
-	"github.com/ledongthuc/awssecretsmanagerui/server/actions"
+	"github.com/itsmethemojo/awssecretsmanagerui/server/actions"
 )
 
 type ListSecretRequest struct {

@@ -9,8 +9,8 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 
-	"github.com/ledongthuc/awssecretsmanagerui/server/auth"
-	"github.com/ledongthuc/awssecretsmanagerui/server/routes"
+	"github.com/itsmethemojo/awssecretsmanagerui/server/auth"
+	"github.com/itsmethemojo/awssecretsmanagerui/server/routes"
 )
 
 //go:embed static/*

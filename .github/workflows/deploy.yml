@@ -16,15 +16,15 @@ jobs:
       with:
         context: .
         load: true
-        tags: ledongthuc/awssecretsmanagerui:latest
+        tags: itsmethemojo/awssecretsmanagerui:latest
     - name: Login to DockerHub
       uses: docker/login-action@v1 
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Push latest
-      run: docker push ledongthuc/awssecretsmanagerui:latest
+      run: docker push itsmethemojo/awssecretsmanagerui:latest
     - name: Push version
       run: |
-        docker tag ledongthuc/awssecretsmanagerui:latest ledongthuc/awssecretsmanagerui:${{ steps.vars.outputs.tag }}
-        docker push ledongthuc/awssecretsmanagerui:${{ steps.vars.outputs.tag }}
+        docker tag itsmethemojo/awssecretsmanagerui:latest itsmethemojo/awssecretsmanagerui:${{ steps.vars.outputs.tag }}
+        docker push itsmethemojo/awssecretsmanagerui:${{ steps.vars.outputs.tag }}

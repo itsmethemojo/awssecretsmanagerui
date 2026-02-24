@@ -9,8 +9,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/ledongthuc/awssecretsmanagerui/server/actions"
-	"github.com/ledongthuc/awssecretsmanagerui/server/auth"
+	"github.com/itsmethemojo/awssecretsmanagerui/server/actions"
+	"github.com/itsmethemojo/awssecretsmanagerui/server/auth"
 )
 
 func SetupAWSCognitoRoute(g *echo.Group) {

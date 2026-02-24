@@ -13,7 +13,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
-	<string>ledongthuc.awssecretsmanagerui</string>
+	<string>itsmethemojo.awssecretsmanagerui</string>
 	<key>CFBundleVersion</key>
 	<string>0.0.1</string>
 	<key>NSMainNibFile</key>
