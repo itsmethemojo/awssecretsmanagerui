@@ -6,7 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/ledongthuc/awssecretsmanagerui/server/actions"
+	"github.com/itsmethemojo/awssecretsmanagerui/server/actions"
 )
 
 func CreateJWTAuth() middleware.JWTConfig {

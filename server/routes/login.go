@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
-	"github.com/ledongthuc/awssecretsmanagerui/server/actions"
+	"github.com/itsmethemojo/awssecretsmanagerui/server/actions"
 )
 
 type UserLogin struct {

@@ -1,4 +1,4 @@
-module github.com/ledongthuc/awssecretsmanagerui/server
+module github.com/itsmethemojo/awssecretsmanagerui/server
 
 go 1.18
 

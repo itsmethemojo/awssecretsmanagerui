@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/ledongthuc/awssecretsmanagerui/server/actions"
+	"github.com/itsmethemojo/awssecretsmanagerui/server/actions"
 )
 
 // SetupRoutes will setup all routes in systems. Sub routs will be manage details by setupXXX function
