@@ -10,10 +10,11 @@ import (
 
 func setupAWSRoutes(g *echo.Group) {
 	g.GET("/regions", func(c echo.Context) error {
-		regions, err := actions.GetAWSRegions()
-		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-		}
+		//regions, err := actions.GetAWSRegions()
+		//if err != nil {
+		//	return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		//}
+		regions := actions.GetAWSRegions()
 		return c.JSON(http.StatusOK, regions)
 	})
 

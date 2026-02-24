@@ -1,4 +1,4 @@
-FROM golang:1.16.2 as gobuilder
+FROM golang:1.23 as gobuilder
 WORKDIR /app
 COPY ./server .
 COPY ./tmp_static_assets ./static

@@ -1,12 +1,13 @@
 package actions
 
 import (
+	"context"
 	"os"
 	"strings"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/secretsmanager"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
 )
 
 var filterNames []string
@@ -26,29 +27,28 @@ func GetFilterNames() []string {
 	return filterNames
 }
 
-func getFilerNamesSecret(listFilterNames []string) *secretsmanager.Filter {
-	keyName := "name"
-	nameFilters := &secretsmanager.Filter{
-		Key:    &keyName,
-		Values: make([]*string, len(listFilterNames)),
-	}
-
-	for i := range listFilterNames {
-		nameFilters.Values[i] = &listFilterNames[i]
+func getFilerNamesSecret(listFilterNames []string) types.Filter {
+	nameFilters := types.Filter{
+		Key:    types.FilterNameStringTypeName,
+		Values: listFilterNames,
 	}
 
 	return nameFilters
 }
 
-func GetListSecrets(region string) ([]*secretsmanager.SecretListEntry, error) {
-	svc := secretsmanager.New(session.New(&aws.Config{
-		Region: aws.String(region),
-	}))
-	maxResult := int64(100)
+func GetListSecrets(region string) ([]types.SecretListEntry, error) {
+	config, configErr := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region))
+	if configErr != nil {
+		return []types.SecretListEntry{}, configErr
+	}
+	
+	svc := secretsmanager.NewFromConfig(config)
+
+	maxResult := int32(100)
 
 	index := 0
 	var token *string
-	secrets := []*secretsmanager.SecretListEntry{}
+	secrets := []types.SecretListEntry{}
 	for ; token != nil || index == 0; index++ {
 		result, err := GetAPageSecrets(svc, token, maxResult)
 		if err != nil {
@@ -60,7 +60,7 @@ func GetListSecrets(region string) ([]*secretsmanager.SecretListEntry, error) {
 	return secrets, nil
 }
 
-func GetAPageSecrets(svc *secretsmanager.SecretsManager, token *string, maxResult int64) (*secretsmanager.ListSecretsOutput, error) {
+func GetAPageSecrets(svc *secretsmanager.Client, token *string, maxResult int32) (*secretsmanager.ListSecretsOutput, error) {
 	input := &secretsmanager.ListSecretsInput{
 		MaxResults: &maxResult,
 		NextToken:  token,
@@ -68,18 +68,14 @@ func GetAPageSecrets(svc *secretsmanager.SecretsManager, token *string, maxResul
 
 	filterNames := GetFilterNames()
 
-	var filterNamesSecret *secretsmanager.Filter
-	if len(filterNames) > 0 {
-		filterNamesSecret = getFilerNamesSecret(filterNames)
+	var filterNamesSecret types.Filter
+
+	filterNamesSecret = getFilerNamesSecret(filterNames)
+	input.Filters = []types.Filter{
+		filterNamesSecret,
 	}
 
-	if filterNamesSecret != nil {
-		input.Filters = []*secretsmanager.Filter{
-			filterNamesSecret,
-		}
-	}
-
-	result, err := svc.ListSecrets(input)
+	result, err := svc.ListSecrets(context.TODO(), input)
 	if err != nil {
 		return nil, err
 	}

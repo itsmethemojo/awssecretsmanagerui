@@ -1,11 +1,12 @@
 package actions
 
 import (
+	"context"
 	"errors"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/secretsmanager"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 )
 
 func CheckNameInList(listName []string, name string) bool {
@@ -19,14 +20,18 @@ func CheckNameInList(listName []string, name string) bool {
 }
 
 func GetSecretByARN(region, arn string) (secretsmanager.DescribeSecretOutput, error) {
-	svc := secretsmanager.New(session.New(&aws.Config{
-		Region: aws.String(region),
-	}))
+  
+	config, configErr := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region))
+	if configErr != nil {
+		return secretsmanager.DescribeSecretOutput{}, configErr
+	}
+
+	svc := secretsmanager.NewFromConfig(config)
 
 	input := &secretsmanager.DescribeSecretInput{
 		SecretId: aws.String(arn),
 	}
-	result, err := svc.DescribeSecret(input)
+	result, err := svc.DescribeSecret(context.TODO(), input)
 
 	filterNames := GetFilterNames()
 	if len(filterNames) > 0 && !CheckNameInList(filterNames, *result.Name) {
