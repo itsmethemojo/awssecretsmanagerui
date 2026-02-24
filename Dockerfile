@@ -1,15 +1,7 @@
-FROM node:lts-alpine as vuebuilder
-WORKDIR /app
-COPY ui/package*.json ./
-RUN npm install
-COPY ./ui/ .
-ENV SERVER=/
-RUN npm run export
-
 FROM golang:1.16.2 as gobuilder
 WORKDIR /app
 COPY ./server .
-COPY --from=vuebuilder /app/public ./static
+COPY ./tmp_static_assets ./static
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ./aws-secrets-manager-ui .;
 
 FROM alpine:latest  
