@@ -27,7 +27,7 @@ func GetFilterNames() []string {
 	return filterNames
 }
 
-func getFilerNamesSecret(listFilterNames []string) types.Filter {
+func getFilterNamesSecret(listFilterNames []string) types.Filter {
 	nameFilters := types.Filter{
 		Key:    types.FilterNameStringTypeName,
 		Values: listFilterNames,
@@ -70,9 +70,11 @@ func GetAPageSecrets(svc *secretsmanager.Client, token *string, maxResult int32)
 
 	var filterNamesSecret types.Filter
 
-	filterNamesSecret = getFilerNamesSecret(filterNames)
-	input.Filters = []types.Filter{
-		filterNamesSecret,
+	if len(filterNames) > 0 {
+		filterNamesSecret = getFilterNamesSecret(filterNames)
+		input.Filters = []types.Filter{
+			filterNamesSecret,
+		}
 	}
 
 	result, err := svc.ListSecrets(context.TODO(), input)
