@@ -22,17 +22,18 @@ func GetSecretValueByARN(region, arn string) (secretsmanager.GetSecretValueOutpu
 	}
 	result, err := svc.GetSecretValue(context.TODO(), input)
 
-	filterNames := GetFilterNames()
-	if len(filterNames) > 0 && !CheckNameInList(filterNames, *result.Name) {
-		return secretsmanager.GetSecretValueOutput{}, errors.New("Can't get secret")
-	}
-
 	if err != nil {
 		return secretsmanager.GetSecretValueOutput{}, err
 	}
 	if result == nil {
-		return secretsmanager.GetSecretValueOutput{}, errors.New("Can't get secret")
+		return secretsmanager.GetSecretValueOutput{}, errors.New("Can't find secret in AWS")
 	}
+
+	filterNames := GetFilterNames()
+	if len(filterNames) > 0 && !CheckNameInList(filterNames, *result.Name) {
+		return secretsmanager.GetSecretValueOutput{}, errors.New("Not allowed to get Secret. Not in Filtered List")
+	}
+
 	return *result, nil
 }
 

@@ -20,7 +20,6 @@ func CheckNameInList(listName []string, name string) bool {
 }
 
 func GetSecretByARN(region, arn string) (secretsmanager.DescribeSecretOutput, error) {
-  
 	config, configErr := config.LoadDefaultConfig(context.TODO(), config.WithRegion(region))
 	if configErr != nil {
 		return secretsmanager.DescribeSecretOutput{}, configErr
@@ -31,18 +30,20 @@ func GetSecretByARN(region, arn string) (secretsmanager.DescribeSecretOutput, er
 	input := &secretsmanager.DescribeSecretInput{
 		SecretId: aws.String(arn),
 	}
-	result, err := svc.DescribeSecret(context.TODO(), input)
 
-	filterNames := GetFilterNames()
-	if len(filterNames) > 0 && !CheckNameInList(filterNames, *result.Name) {
-		return secretsmanager.DescribeSecretOutput{}, errors.New("Can't get secret")
-	}
+	result, err := svc.DescribeSecret(context.TODO(), input)
 
 	if err != nil {
 		return secretsmanager.DescribeSecretOutput{}, err
 	}
+
 	if result == nil {
-		return secretsmanager.DescribeSecretOutput{}, errors.New("Can't get secret")
+		return secretsmanager.DescribeSecretOutput{}, errors.New("Can't find secret in AWS")
+	}
+
+	filterNames := GetFilterNames()
+	if len(filterNames) > 0 && !CheckNameInList(filterNames, *result.Name) {
+		return secretsmanager.DescribeSecretOutput{}, errors.New("Not allowed to get Secret. Not in Filtered List")
 	}
 	return *result, nil
 }
