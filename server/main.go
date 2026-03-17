@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
@@ -39,7 +40,7 @@ func main() {
 		if os.Getenv("AUTH_TYPE") == "login_form" {
 			log.Info("Start with login form")
 			routes.SetupLoginRoute(e.Group("/api"))
-			mainGroup.Use(middleware.JWTWithConfig(auth.CreateJWTAuth()))
+			mainGroup.Use(echojwt.WithConfig(auth.CreateJWTAuth()))
 		} else if os.Getenv("AUTH_TYPE") == "aws_cognito_auth2" {
 			log.Info("Start with AWS Cognito Auth 2.0")
 			routes.SetupAWSCognitoRoute(e.Group("/cognito"))

@@ -4,11 +4,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type LoginClaims struct {
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 type TokenPayload struct {
@@ -22,17 +22,18 @@ type Token struct {
 }
 
 func GenerateJWTToken(data TokenPayload, expiry int) (*Token, error) {
-	standardClaims := jwt.StandardClaims{
-		IssuedAt: time.Now().UTC().Unix(),
+	now := time.Now().UTC()
+	registeredClaims := jwt.RegisteredClaims{
+		IssuedAt: jwt.NewNumericDate(now),
 		Subject:  data.Username,
 	}
 
 	if expiry != -1 {
-		standardClaims.ExpiresAt = time.Now().UTC().Add(time.Second * time.Duration(expiry)).Unix()
+		registeredClaims.ExpiresAt = jwt.NewNumericDate(now.Add(time.Second * time.Duration(expiry)))
 	}
 
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, LoginClaims{
-		standardClaims,
+		registeredClaims,
 	})
 
 	myToken, err := t.SignedString([]byte(os.Getenv("JWT_SIGNATURE_KEY")))
