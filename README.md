@@ -1,8 +1,10 @@
 # AWS Secrets Manager UI
 
-[![Built with WeBuild](https://raw.githubusercontent.com/webuild-community/badge/master/svg/WeBuild.svg)](https://webuild.community) [![build](https://github.com/itsmethemojo/awssecretsmanagerui/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/itsmethemojo/awssecretsmanagerui/actions/workflows/build.yml)
-
 A Web application to manage AWS Secrets manager
+
+**NOTE** This has been forked from [ledongthuc/awssecretsmanagerui](https://github.com/ledongthuc/awssecretsmanagerui) to add some minor improvements.
+
+It has been updated to AWS sdk-go v2 and Tag Filter support was added.
 
 ![AWS Secrets Manager UI](https://user-images.githubusercontent.com/1828895/113342648-07e31280-932f-11eb-9949-9a2ec0c08e40.png)
 
@@ -103,6 +105,16 @@ AWS Secrets manager support filter secrets by names through variable environment
 - `FILTER_NAMES=production,development`
 
 `FILTER_NAMES` defines which secrets you want to provide with AWS Secrets manager, each secret name is separated by comma. In the above example, you want to show only secrets with name `production` and `development`.
+
+## Filter secret by tag
+
+When working with IAM Roles you might want to restrict the secrets that can be listed, viewed and edited by this application.
+
+If you use this on IAM role level you have to additionally filter the secrets listed in the app with the same filter, since the ListSecrets API can not be set for specific tags.
+
+You can than add the Tag Filter this way to make sure only secrets will be shown that also can be viewed and edited.
+
+`FILTER_TAG=listSecretInUi=true`
 
 ## Screenshoots
 
